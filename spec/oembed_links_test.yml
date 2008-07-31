@@ -1,0 +1,26 @@
+:config:
+  :method: "NetHTTP"
+
+:providers:
+  :test1: "http://test1/dude/{format}/"
+  :test2: "http://test2.{format}"
+  :test3: "http://test3"
+
+
+:test1:
+  :format: "json"
+  :schemes:
+    - "http://test1.*/*"
+    - "http://test1/*/test/*"
+
+:test2:
+  :format: "xml"
+  :schemes:
+    - "http://test2.*/*/stuff/*"
+    - "http://test2/foo/bar/*"
+
+:test3:
+  :format: "json"
+  :schemes:
+    - "http://test3/foo/*"
+

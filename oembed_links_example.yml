@@ -1,0 +1,39 @@
+:config:
+  :method: "NetHTTP"
+
+:providers:
+  :oohembed: "http://oohembed.com/oohembed/"
+  :vimeo: "http://www.vimeo.com/api/oembed.{format}"
+  :hulu: "http://www.hulu.com/api/oembed.{format}"
+  :flickr: "http://www.flickr.com/services/oembed"
+
+:oohembed:
+  :format: "json"
+  :schemes:
+    - "http://*.amazon.(com|co.uk|de|ca|jp)/*/(gp/product|o/ASIN|obidos/ASIN|dp)/*"
+    - "http://*.collegehumor.com/video:*"
+    - "http://*.funnyordie.com/videos/*"
+    - "http://video.google.com/videoplay?*"
+    - "http://*.imdb.com/title/tt*/"
+    - "http://*.metacafe.com/watch/*"
+    - "http://*.slideshare.net/*"
+    - "http://twitter.com/*/statuses/*"
+    - "http://*.wikipedia.org/wiki/*"
+    - "http://*.wordpress.com/yyyy/mm/dd/*"
+    - "http://*.youtube.com/watch*"
+
+:vimeo:
+  :format: "json"
+  :schemes:
+    - "http://www.vimeo.com/groups/*/*"
+    - "http://www.vimeo.com/*"
+
+:hulu:
+  :format: "xml"
+  :schemes:
+    - "http://www.hulu.com/watch/*"
+
+:flickr:
+  :format: "json"
+  :schemes:
+    - "http://*.flickr.com/*"

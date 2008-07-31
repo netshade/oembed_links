@@ -1,0 +1,35 @@
+This is the oembed_links gem.  It allows you to easily parse text and
+query configured providers for embedding information on the links
+inside the text. A sample configuration file for configuring the
+library has been included (oembed_links_example.yml), though you
+may also configure the library programmatically (see rdocs).
+
+
+
+To get started quickly (in irb):
+
+require 'oembed_links'
+OEmbed.register({:method => "NetHTTP"},
+                {:flickr => "http://www.flickr.com/services/oembed/"},
+                {:flickr => { :format => "xml", :schemes => ["http://www.flickr.com/photos/*"]}})
+OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/2341623661/")
+
+
+
+To get started quickly in Rails:
+
+Copy the included oembed_links_example.yml file to RAILS_ROOT/config/oembd_links.yml,
+add a dependency to the gem in your environment.rb ( config.gem "oembed_links" )
+and start your server.  That's it.
+
+
+
+
+See the rdocs for much more complete examples.  The specs directory has some examples of programmatic
+use, but the test to code ratio is slim atm.
+
+Thanks to the Indianapolis Star I&D department for open sourcing this; most notably Chris Vannoy for giving the okay.
+
+
+CZ - chris.zelenak!at!!indystar.com
+
