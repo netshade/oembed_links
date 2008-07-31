@@ -10,9 +10,20 @@ To get started quickly (in irb):
 
 require 'oembed_links'
 OEmbed.register({:method => "NetHTTP"},
-                {:flickr => "http://www.flickr.com/services/oembed/"},
-                {:flickr => { :format => "xml", :schemes => ["http://www.flickr.com/photos/*"]}})
-OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/2341623661/")
+                {:flickr => "http://www.flickr.com/services/oembed/",
+                 :vimeo => "http://www.vimeo.com/api/oembed.{format}"},
+                {:flickr => { :format => "xml", :schemes => ["http://www.flickr.com/photos/*"]},
+                 :vimeo => { :format => "json", :schemes => ["http://www.vimeo.com/*"]}})
+
+# Simple transformation
+OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/2341623661/ and all I did was show the URL straight to the picture")
+
+# More complex transformation
+OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/2341623661/ and this is a vimeo URL http://www.vimeo.com/757219 wow neat") do |r|
+  r.audio? { |a| "It's unlikely flickr or vimeo will give me audio" }
+  r.photo? { |p| "<img src='#{p["url"]}' alt='Sweet, a photo named #{p["title"]}' />" }
+  r.from?(:vimeo) { |v| "<div class='vimeo'>#{v['html']}</div>" }
+end
 
 
 
