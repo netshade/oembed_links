@@ -25,7 +25,7 @@ OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/234162
   r.from?(:vimeo) { |v| "<div class='vimeo'>#{v['html']}</div>" }
 end
 
-# Transformation to drive affiliate links to Amazon to our department and help us buy some laptops (hint)
+# Transformation to drive Amazon links to our department affiliate code and help us buy some laptops (hint)
 OEmbed.register_provider(:oohembed,
                          "http://oohembed.com/oohembed/",
                          "json",
