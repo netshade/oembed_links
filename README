@@ -25,6 +25,28 @@ OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/234162
   r.from?(:vimeo) { |v| "<div class='vimeo'>#{v['html']}</div>" }
 end
 
+# Transformation to drive affiliate links to Amazon to our department and help us buy some laptops (hint)
+OEmbed.register_provider(:oohembed,
+                         "http://oohembed.com/oohembed/",
+                         "json",
+                         "http://*.amazon.(com|co.uk|de|ca|jp)/*/(gp/product|o/ASIN|obidos/ASIN|dp)/*",
+                         "http://*.amazon.(com|co.uk|de|ca|jp)/(gp/product|o/ASIN|obidos/ASIN|dp)/*")
+OEmbed.transform("Here is a link to amazon http://www.amazon.com/Complete-Aubrey-Maturin-Novels/dp/039306011X/ref=pd_bbs_sr_2 wow") do |res, url|
+    res.matches?(/amazon/) { |d|
+      unless url =~ /(&|\?)tag=[^&]+/i
+        url += ((url.index("?")) ? "&" : "?")
+        url += "tag=wwwindystarco-20"
+      end
+      <<-EOHTML
+        <div style="text-align:center;">
+          <a href='#{url}' target='_blank'>
+            <img src='#{d['thumbnail_url']}' border='0' /><br />
+            #{d['title']} #{"<br />by #{d['author']}" if d['author']}
+          </a>
+        </div>
+      EOHTML
+    }
+end
 
 
 To get started quickly in Rails:
