@@ -234,23 +234,50 @@ class OEmbed
   # You may specify any type name you wish as the method name, and its type will be checked
   # appropriately (as shown by the obviously trivial .hedgehog? method name).
   #
-  def self.transform(txt, *attribs, &block)
+  def self.transform(txt, use_strict = false, *attribs, &block)
     ret = txt.dup
-    uris = URI.extract(txt, "http") do |u|
-      unless (vschemes = @schemes.select { |a| u =~ a[0] }).empty?
-        regex, provider = vschemes.first
-        data = get_url_for_provider(u, provider, *attribs)
-        response = OEmbed::Response.new(provider, u, data)
-        if block.nil?
-          ret.gsub!(u, response.to_s)
-        else
-          yield(response, u)
-          ret.gsub!(u, response.rendered_content)
-        end
+
+    if use_strict
+      URI.extract(txt, "http") do |u|
+        transform_url_for_text!(u, ret, *attribs, &block)
+      end
+    else
+      simple_extract(txt) do |u|
+        transform_url_for_text!(u, ret, *attribs, &block)
       end
     end
+
     return ret
   end
+
+  private
+
+  def self.simple_extract(str, &block)
+    reg = /(https?:\/\/[^\s]+)/i
+    if block_given?
+      str.scan(reg) { yield $& }
+      nil
+    else
+      result = []
+      str.scan(reg) { result.push $& }
+      result
+    end
+  end
+
+  def self.transform_url_for_text!(u, txt, *attribs, &block)
+    unless (vschemes = @schemes.select { |a| u =~ a[0] }).empty?
+      regex, provider = vschemes.first
+      data = get_url_for_provider(u, provider, *attribs)
+      response = OEmbed::Response.new(provider, u, data)
+      if block.nil?
+        txt.gsub!(u, response.to_s)
+      else
+        yield(response, u)
+        txt.gsub!(u, response.rendered_content)
+      end
+    end    
+  end
+  
   
 end
 require 'oembed_links/formatters/json'
