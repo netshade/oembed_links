@@ -44,7 +44,7 @@ require 'oembed_links/response'
 #
 #  OEmbed.transform("This is my text and here's a picture http://www.flickr.com/path/to/a/photo")
 #
-#  OEmbed.transform("Same text http://youtube.com/videos/somevideo") do |r|
+#  OEmbed.transform("Same text http://youtube.com/videos/somevideo") do |r, url|
 #    r.from?(:youtube) { |vid| vid["html"] }
 #  end
 #
@@ -206,7 +206,7 @@ class OEmbed
   # You may fine tune the appearance of the embedding information by using the
   # following forms:
   #
-  #   OEmbed.transform(some_string) do |r|
+  #   OEmbed.transform(some_string) do |r, url|
   #     r.from?(:provider_name) { |content| content["html"] }
   #     r.matches?(/some_regex_against_the_url/) { |content| content["title"] }
   #     r.video? { |video| content["html"] }
@@ -244,7 +244,7 @@ class OEmbed
         if block.nil?
           ret.gsub!(u, response.to_s)
         else
-          yield(response)
+          yield(response, u)
           ret.gsub!(u, response.rendered_content)
         end
       end

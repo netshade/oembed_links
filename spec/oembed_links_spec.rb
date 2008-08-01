@@ -77,7 +77,7 @@ describe OEmbed, "transforming functions" do
   end
 
   it "should always give priority to provider conditional blocks" do
-    OEmbed.transform("http://test1.net/foo") do |r|
+    OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any? { |a| "any" }
       r.video? { |v| "video" }
       r.from?(:test1) { |t| "test1" }
@@ -86,12 +86,12 @@ describe OEmbed, "transforming functions" do
   end
 
   it "should always give priority regex conditional blocks over all others except provider" do
-    OEmbed.transform("http://test1.net/foo") do |r|
+    OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any? { |a| "any" }
       r.video? { |v| "video" }
       r.matches?(/./) { |m| "regex" }
     end.should == "regex"
-    OEmbed.transform("http://test1.net/foo") do |r|
+    OEmbed.transform("http://test1.net/foo") do |r, url|
       r.matches?(/./) { |m| "regex" }
       r.any? { |a| "any" }
       r.video? { |v| "video" }      
@@ -99,7 +99,7 @@ describe OEmbed, "transforming functions" do
   end
 
   it "should recognize the type of content and handle the conditional block appropriately" do
-    OEmbed.transform("http://test1.net/foo") do |r|
+    OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any? { |a| "any" }
       r.video? { |v| "video" }
     end.should == "video"
@@ -107,14 +107,14 @@ describe OEmbed, "transforming functions" do
      "html" => "bar",
      "type" => "hedgehog"
     }.to_json)
-    OEmbed.transform("http://test1.net/foo") do |r|
+    OEmbed.transform("http://test1.net/foo") do |r, url|
       r.video? { |v| "video" }
       r.hedgehog? { |v| "hedgey"}
     end.should == "hedgey"    
   end
 
   it "should still output the content of a url if no transforming blocks match it" do
-    OEmbed.transform("http://test1.net/foo") do |r|
+    OEmbed.transform("http://test1.net/foo") do |r, url|
       r.audio? { |a| "audio" }
       r.hedgehog? { |v| "hedgey"}
       r.from?(:test2) { |t| "test2" }

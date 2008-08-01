@@ -19,7 +19,7 @@ OEmbed.register({:method => "NetHTTP"},
 OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/2341623661/ and all I did was show the URL straight to the picture")
 
 # More complex transformation
-OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/2341623661/ and this is a vimeo URL http://www.vimeo.com/757219 wow neat") do |r|
+OEmbed.transform("This is my flickr URL http://www.flickr.com/photos/bees/2341623661/ and this is a vimeo URL http://www.vimeo.com/757219 wow neat") do |r, url|
   r.audio? { |a| "It's unlikely flickr or vimeo will give me audio" }
   r.photo? { |p| "<img src='#{p["url"]}' alt='Sweet, a photo named #{p["title"]}' />" }
   r.from?(:vimeo) { |v| "<div class='vimeo'>#{v['html']}</div>" }
