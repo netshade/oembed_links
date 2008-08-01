@@ -203,6 +203,22 @@ class OEmbed
   # the OEmbed::Response object representing the embedding information for that
   # url.
   #
+  # OEmbed.transform supports two additional parameters:
+  #
+  #   use_strict:  Optionally use Ruby's stricter URI detection regex. While
+  #                this will be technically correct regex, not all URLs
+  #                use correct syntax.  If this is false, URLs will be detected
+  #                by the incredibly naive approach of finding any instance of
+  #                http:// or https://, and finding anything that is not whitespace
+  #                after that.
+  #
+  #                Example:
+  #                OEmbed.transform("all my urls are correctly formed", true)
+  #
+  #   (options hash):  This hash is used to append extra querystring parameters
+  #                to the oembed provider.  For example:
+  #                OEmbed.transform("blah", false, :max_width => 320, :max_height => 200)
+  #
   # You may fine tune the appearance of the embedding information by using the
   # following forms:
   #
@@ -221,6 +237,9 @@ class OEmbed
   #  The first matching block for a URL regex (.matches?(/some_regex_against_the_url/)) takes precedence OVER
   #  The first matching block for a type equivalent (.video?, .audio?, .hedgehog?, .photo?) takes precendence OVER
   #  The match anything block (.any?)
+  #
+  #
+  #
   #
   # You do not need to specify an .any? block if you do not intend to perform any special
   # transformations upon its data; the OEmbed::Response object will output either its html attribute
@@ -252,6 +271,7 @@ class OEmbed
 
   private
 
+  # stupid simple copy of URI.extract to allow for looser URI detection
   def self.simple_extract(str, &block)
     reg = /(https?:\/\/[^\s]+)/i
     if block_given?
@@ -264,6 +284,8 @@ class OEmbed
     end
   end
 
+  # extraction of inner loop of .transform(), to allow for easier
+  # parameterization of OEmbed
   def self.transform_url_for_text!(u, txt, *attribs, &block)
     unless (vschemes = @schemes.select { |a| u =~ a[0] }).empty?
       regex, provider = vschemes.first
