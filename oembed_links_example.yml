@@ -20,7 +20,7 @@
     - "http://*.slideshare.net/*"
     - "http://twitter.com/*/statuses/*"
     - "http://*.wikipedia.org/wiki/*"
-    - "http://*.wordpress.com/yyyy/mm/dd/*"
+    - "http://*.wordpress.com/[0-9]{4}/[0-9]{2}/[0-9]{2}/*"
     - "http://*.youtube.com/watch*"
 
 :vimeo:
