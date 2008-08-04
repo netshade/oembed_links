@@ -13,7 +13,7 @@ class OEmbed
       # XML will not work; only strings, ints and
       # floats will be converted.
       def format(txt)
-        parser = LibXML::XML::Parser.string(txt)
+        parser = ::LibXML::XML::Parser.string(txt)
         doc = parser.parse
         h = { }
         doc.root.children.each do |node|
