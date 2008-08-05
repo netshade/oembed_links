@@ -1,5 +1,6 @@
 # The class used to represent data returned by the server.
 #
+require 'oembed_links/template_resolver'
 class OEmbed
   class Response
 
@@ -23,22 +24,22 @@ class OEmbed
 
     # Test if this response has been returned from
     # the given provider_name.
-    def from?(provider_name, &block)
+    def from?(provider_name, *args, &block)
       if @provider.to_s === provider_name.to_s
         if can_render_type?(:provider)
           @rendered_via_provider = true
-          return render_content(&block)
+          return render_content(*args, &block)
         end
       end
     end
 
     # Test if this response came from a URL
     # that matches the given regex.
-    def matches?(regex, &block)
+    def matches?(regex, *args, &block)
       if @url =~ regex
         if can_render_type?(:regex)
           @rendered_via_regex = true
-          render_content(&block)
+          render_content(*args, &block)
         end
       end
     end
@@ -46,9 +47,9 @@ class OEmbed
     # Lowest priority renderer, which will execute
     # a block regardless of conditions so long as
     # no content has yet been rendered for this response.
-    def any?(&block)
+    def any?(*args, &block)
       if can_render_type?
-        return render_content(&block)
+        return render_content(*args, &block)
       end      
     end
 
@@ -63,7 +64,7 @@ class OEmbed
         if @response["type"] == ts
           if can_render_type?(:type)
             @rendered_via_type = true
-            return render_content(&block)
+            return render_content(*args, &block)
           end
         end
       else
@@ -90,8 +91,11 @@ class OEmbed
       !@rendered.nil?
     end
     
-    def render_content(&block)
-      if block_given?
+    def render_content(*args, &block)
+      options = (args.last.is_a?(Hash)) ? args.last : { }
+      if options[:template]
+        @rendered = TemplateResolver.eval_template_for_path(options[:template], @url, @response, self)
+      elsif block_given?
         @rendered = yield(@response)
       else
         @rendered = self.to_s

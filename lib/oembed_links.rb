@@ -48,6 +48,10 @@ require 'oembed_links/response'
 #    r.from?(:youtube) { |vid| vid["html"] }
 #  end
 #
+#  OEmbed.transform("Some more text from http://en.wikipedia.com/wiki/Dinosaurs!") do |r, url|
+#    r.from?(:wikipedia, :template => "links/wiki_links")
+#  end 
+#
 #  See the OEmbed.transform function for more details.
 #
 #
@@ -225,9 +229,9 @@ class OEmbed
   #   OEmbed.transform(some_string) do |r, url|
   #     r.from?(:provider_name) { |content| content["html"] }
   #     r.matches?(/some_regex_against_the_url/) { |content| content["title"] }
-  #     r.video? { |video| content["html"] }
+  #     r.video?(:template => "videos/oembed_link")
   #     r.audio? { |audio| content["html"] }
-  #     r.hedgehog? { |hog| content["title"] }
+  #     r.hedgehog?(:template => File.join(File.dirname(__FILE__), "templates", "hedgehogs.haml"))
   #     r.photo? { |photo| "<img src='#{photo["url"]}' title='#{photo['title']} />" }
   #     r.any? { |anythingelse| content["title"] }
   #   end
@@ -247,6 +251,19 @@ class OEmbed
   #
   # The value passed to these conditional blocks is a hash representing the data returned
   # by the server.  The keys of all the attributes will be strings.
+  #
+  # If you specify the :template option, a template will be found for you based on your current engironment.
+  # Currently there is support for Haml, Erubis and ERB templates.  Each template will have the following
+  # local variables available to it:
+  #
+  #  url      : The URL for which OEmbed data exists
+  #  data     : A hash of the actual OEmbed data for that URL
+  #  response : The OEmbed::Response object for the URL
+  #
+  #
+  # If you are using Rails, you may specify your template relative to your application's
+  # view root (eg "photos/flickr_oembed"), and your template will be found based on your application settings.
+  # For more options regarding template support, see the documentation for OEmbed::TemplateResolver.
   #
   # NOTE: The type equivalent blocks (.video?, .audio?, .hedgehog?, .photo?, etc.) perform
   # an equality test between the method name and the type returned by the OEmbed provider.
