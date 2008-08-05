@@ -74,6 +74,8 @@ describe OEmbed, "transforming functions" do
      "type" => "video"
     }.to_json)
     OEmbed.register_yaml_file(File.join(File.dirname(__FILE__), "oembed_links_test.yml"))
+    @current_path = File.dirname(__FILE__)
+    @template_path = File.join(@current_path, "templates")
   end
 
   it "should always give priority to provider conditional blocks" do
@@ -121,8 +123,124 @@ describe OEmbed, "transforming functions" do
       r.matches?(/baz/) { |m| "regex" }
     end.should == "foo" 
   end
+
+  it "should allow templates to be used to process the output" do
+    url_provides({
+     "url" => "template!"
+                 }.to_json)
+    
+    OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => File.join(@template_path, "test.rhtml"))
+    end.should == "template! rhtml"
+  end
+
+
+  it "should allow a template root to be set programmatically to process the output" do
+    url_provides({
+                   "url" => "template!"
+                 }.to_json)
+    OEmbed::TemplateResolver.template_root = @template_path
+    OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => "test.html.erb")
+    end.should == "template! erb\n"
+  end
+
+  it "should allow for selection of different template renderers" do
+    url_provides({
+                   "url" => "template!"
+                 }.to_json)
+    defined?(Erubis).should_not == true
+    defined?(Haml).should_not == true
+    OEmbed::TemplateResolver.template_root = @template_path    
+    OEmbed::TemplateResolver.template_processor = :erubis
+    OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => "test.html.erb")
+    end.should == "template! erb\n"    
+    defined?(Erubis).should == "constant"
+    OEmbed::TemplateResolver.template_processor = :haml
+    OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => "test.haml")
+    end.should == "template! haml\n"
+    defined?(Haml).should == "constant"
+  end
+
+  it "should throw an exception if a path to a template specified does not exist" do
+    url_provides({
+                   "url" => "template!"
+                 }.to_json)
+    lambda { OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => "does.not.exist")
+      end }.should raise_error
+  end
   
   
 end
+
+
+describe OEmbed, "Rails template resolving functions" do
+  include SpecHelper
+  before(:each) do
+    OEmbed.clear_registrations
+    clear_urls
+    url_provides({
+     "html" => "foo",
+                   "type" => "video",
+                   "url" => "rails"
+    }.to_json)
+    OEmbed.register_yaml_file(File.join(File.dirname(__FILE__), "oembed_links_test.yml"))
+    OEmbed::TemplateResolver.template_processor = nil
+    @current_path = File.dirname(__FILE__)
+    @template_path = File.join(@current_path, "templates")
+
+    class ::ActionView
+      class Template
+        @@template_handlers = { }
+
+        def self.support_haml!
+          @@template_handlers = {"haml" => "nothing"}
+        end
+
+        def self.do_not_support_haml!
+          @@template_handlers = { }
+        end
+        
+      end
+    end
+
+    class ::ApplicationController
+      def self.view_paths
+        [File.dirname(__FILE__)]
+      end
+    end
+    
+  end
+
+  it "should support Rails-like template paths for template selection" do
+    OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => "templates/test")
+    end.should == "rails erb\n"
+  end
+
+  it "should support Rails-like template paths with extension specified" do
+    OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => "templates/test.rhtml")
+    end.should == "rails rhtml"
+  end
+
+  it "should allow haml support in the Rails app" do
+    ActionView::Template.support_haml!
+    OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => "templates/test")
+    end.should == "rails haml\n"
+    ActionView::Template.do_not_support_haml!
+    OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.any?(:template => "templates/test")
+    end.should == "rails erb\n"    
+  end
+  
+end
+
+
+
 
 
