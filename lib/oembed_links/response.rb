@@ -1,6 +1,6 @@
 # The class used to represent data returned by the server.
 #
-require 'oembed_links/template_resolver'
+
 class OEmbed
   class Response
 

@@ -1,6 +1,7 @@
 require 'cgi'
 require 'uri'
 require 'yaml'
+require 'oembed_links/template_resolver'
 require 'oembed_links/response'
 
 # The OEmbed class is the interface to class registration functions
