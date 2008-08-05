@@ -4,6 +4,11 @@ inside the text. A sample configuration file for configuring the
 library has been included (oembed_links_example.yml), though you
 may also configure the library programmatically (see rdocs).
 
+You must have the JSON gem installed to use oembed_links.
+If you have the libxml-ruby gem installed, oembed_links will use that;
+it will fall back to hpricot if that is installed, and finally REXML
+if you have nothing else.  
+
 
 
 To get started quickly (in irb):
@@ -53,7 +58,20 @@ To get started quickly in Rails:
 
 Copy the included oembed_links_example.yml file to RAILS_ROOT/config/oembed_links.yml,
 add a dependency to the gem in your environment.rb ( config.gem "oembed_links" )
-and start your server.  That's it.
+and start your server.  That's it.  If you'd like to transform the oembedded content via
+templates, you can do so using the following syntax:
+
+OEmbed.transform(text_to_transform) do |res, url|
+  res.video?(:template => "oembed/video")
+  res.from?(:a_provider, :template => "a_provider/oembed")
+  res.matches?(/some_regex/, :template => "shared/oembed_link")
+  res.any?(:template => "shared/oembed_link")
+end
+
+This presumes you have a directory in your Rails views directory called "oembed", and a file
+of the form "video.html.erb" or "video.rhtml".  Haml templates are also supported (Erubis too).  If you are
+not using Rails, you may still use the template functionality, but you must specify the full path
+to the template.  See the RDocs for OEmbed::TemplateResolver for more information.
 
 
 
