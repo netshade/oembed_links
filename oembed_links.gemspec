@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name       = "oembed_links"
-    s.version    = "0.0.4"
+    s.version    = "0.0.5"
     s.author     = "Indianapolis Star"
     s.email      = "bugs at indystar dot com"
     s.homepage   = "http://www.indystar.com"
