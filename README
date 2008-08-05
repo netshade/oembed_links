@@ -71,7 +71,9 @@ end
 This presumes you have a directory in your Rails views directory called "oembed", and a file
 of the form "video.html.erb" or "video.rhtml".  Haml templates are also supported (Erubis too).  If you are
 not using Rails, you may still use the template functionality, but you must specify the full path
-to the template.  See the RDocs for OEmbed::TemplateResolver for more information.
+to the template.  In either case, you will not have access to any special "template" functionality
+(such as Rails' link_to, image_tag, etc.); the templates are processed outside the Rails app Template
+processing functionality. See the RDocs for OEmbed::TemplateResolver for more information.
 
 
 
