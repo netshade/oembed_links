@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name       = "oembed_links"
-    s.version    = "0.0.5"
+    s.version    = "0.0.6"
     s.author     = "Indianapolis Star"
     s.email      = "bugs at indystar dot com"
     s.homepage   = "http://www.indystar.com"
@@ -11,5 +11,4 @@ Gem::Specification.new do |s|
     s.has_rdoc          = true
     s.extra_rdoc_files  = ['README']
     s.add_dependency(%q<json>)
-    s.add_dependency(%q<libxml-ruby>)
 end
