@@ -5,6 +5,7 @@ describe OEmbed, "registration tasks" do
   
   before(:each) do
     OEmbed.clear_registrations
+    OEmbed.load_default_libs
     clear_urls
   end
 
@@ -62,12 +63,53 @@ describe OEmbed, "registration tasks" do
     OEmbed.transform("http://fake/bar/baz").should == "http://fakesville"
   end
 
+  it "should allow selective loading of formatters through the load_default_libs function" do
+    OEmbed.clear_registrations
+    OEmbed.load_default_libs
+    OEmbed.instance_variable_get("@formatters")["xml"].class.should == OEmbed::Formatters::LibXML
+    OEmbed.clear_registrations
+    OEmbed.load_default_libs("libxml")
+    OEmbed.instance_variable_get("@formatters")["xml"].class.should == OEmbed::Formatters::HpricotXML
+    OEmbed.clear_registrations
+    OEmbed.load_default_libs("libxml", "hpricot")
+    OEmbed.instance_variable_get("@formatters")["xml"].class.should == OEmbed::Formatters::RubyXML    
+  end
+
+  it "should support the hpricot formatter" do
+    OEmbed.clear_registrations
+    OEmbed.load_default_libs("libxml")
+    url_provides(<<-EOXML)
+<?xml version="1.0"?>
+<oembed>
+  <html>bar</html>
+</oembed>
+    EOXML
+    OEmbed.register_provider(:test, "http://test4/oembed.{format}", "xml", "http://test.*/*")
+    OEmbed.transform("http://test.com/bar/baz").should == "bar"
+  end
+
+  it "should support the rexml formatter" do
+    OEmbed.clear_registrations
+    OEmbed.load_default_libs("libxml", "hpricot")
+    url_provides(<<-EOXML)
+<?xml version="1.0"?>
+<oembed>
+  <html>barxml</html>
+</oembed>
+    EOXML
+    OEmbed.register_provider(:test, "http://test4/oembed.{format}", "xml", "http://test.*/*")
+    OEmbed.transform("http://test.com/bar/baz").should == "barxml"
+  end  
+
+  
+
 end
 
 describe OEmbed, "transforming functions" do
   include SpecHelper
   before(:each) do
     OEmbed.clear_registrations
+    OEmbed.load_default_libs
     clear_urls
     url_provides({
      "html" => "foo",
@@ -181,6 +223,7 @@ describe OEmbed, "Rails template resolving functions" do
   include SpecHelper
   before(:each) do
     OEmbed.clear_registrations
+    OEmbed.load_default_libs    
     clear_urls
     url_provides({
      "html" => "foo",

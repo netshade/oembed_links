@@ -149,15 +149,22 @@ class OEmbed
   end
 
   # Clear all registration information; really only valuable in testing
-  def self.clear_registrations
+  def self.clear_registrations()
     @schemes = []
     @urls = { }
     @formats = { }
     @formatters = { }
     @fetchers = { }
-    self.register_formatter(OEmbed::Formatters::LibXML)
+  end
+
+  # Load the default JSON and XML formatters, autodetecting
+  # formatters when possible; load the default fetcher as well
+  def self.load_default_libs(*ignore_formats)
+    self.autodetect_xml_formatters(*ignore_formats)
+    require 'oembed_links/formatters/json'
     self.register_formatter(OEmbed::Formatters::JSON)
-    self.register_fetcher(OEmbed::Fetchers::NetHTTP)    
+    require 'oembed_links/fetchers/net_http'
+    self.register_fetcher(OEmbed::Fetchers::NetHTTP)        
   end
 
   # Register a new formatter.  klass is the class object of the desired formatter.
@@ -286,6 +293,38 @@ class OEmbed
     return ret
   end
 
+  # Determine the XML formatter that can be loaded for
+  # this system based on what libraries are present
+  def self.autodetect_xml_formatters(*ignore)
+    loaded_lib = false
+    unless ignore.include? "libxml"
+      begin
+        require 'libxml'
+        require 'oembed_links/formatters/lib_xml'
+        self.register_formatter(OEmbed::Formatters::LibXML)
+        loaded_lib = true
+      rescue LoadError
+        puts "Error loading LibXML XML formatter"
+      end
+    end
+    unless loaded_lib || ignore.include?("hpricot")
+      begin
+        require 'hpricot'
+        require 'oembed_links/formatters/hpricot_xml'
+        self.register_formatter(OEmbed::Formatters::HpricotXML)        
+        loaded_lib = true
+      rescue LoadError
+        puts "Error loading Hpricot XML formatter"
+      end      
+    end
+    unless loaded_lib || ignore.include?("rexml")
+      require 'oembed_links/formatters/ruby_xml'
+      self.register_formatter(OEmbed::Formatters::RubyXML) 
+      loaded_lib = true
+    end
+    raise StandardError.new("No XML formatter could be autodetected") unless loaded_lib
+  end
+
   private
 
   # stupid simple copy of URI.extract to allow for looser URI detection
@@ -316,9 +355,8 @@ class OEmbed
       end
     end    
   end
-  
-  
 end
-require 'oembed_links/formatters/json'
-require 'oembed_links/formatters/xml'
-require 'oembed_links/fetchers/net_http'    
+
+
+OEmbed.load_default_libs
+
