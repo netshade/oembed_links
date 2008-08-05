@@ -5,6 +5,10 @@ class OEmbed
     class LibXML
       
       def name
+        "libxml"
+      end
+
+      def extension
         "xml"
       end
 
