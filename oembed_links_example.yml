@@ -6,6 +6,7 @@
   :vimeo: "http://www.vimeo.com/api/oembed.{format}"
   :hulu: "http://www.hulu.com/api/oembed.{format}"
   :flickr: "http://www.flickr.com/services/oembed"
+  :viddler: "http://lab.viddler.com/services/oembed/"
 
 :oohembed:
   :format: "json"
@@ -38,3 +39,8 @@
   :format: "xml"
   :schemes:
     - "http://*.flickr.com/*"
+    
+:viddler:
+  :format: "xml"
+  :schemes:
+    - "http://*.viddler.com/*"
