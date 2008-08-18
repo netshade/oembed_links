@@ -69,11 +69,16 @@ OEmbed.transform(text_to_transform) do |res, url|
 end
 
 This presumes you have a directory in your Rails views directory called "oembed", and a file
-of the form "video.html.erb" or "video.rhtml".  Haml templates are also supported (Erubis too).  If you are
-not using Rails, you may still use the template functionality, but you must specify the full path
-to the template.  In either case, you will not have access to any special "template" functionality
-(such as Rails' link_to, image_tag, etc.); the templates are processed outside the Rails app Template
-processing functionality. See the RDocs for OEmbed::TemplateResolver for more information.
+of the form "video.html.erb" or "video.rhtml".  If you are not using Rails, you may still use the
+template functionality, but you must specify the full path to the template. When you are integrating
+with Rails, you may use any template library that is installed for your Rails app; when you are using
+the absolute filename method, you only have access to ERB, Erubis or HAML.
+
+As of version 0.0.9, your Rails oembed templates have access to all the traditional Rails template helper methods
+(such as Rails' link_to, image_tag, etc.); the templates are processed using the Rails template rendering
+pipeline, and as such may even do evil things like access your Models.
+
+See the RDocs for OEmbed::TemplateResolver for more information regarding templates and oembed_links.
 
 
 
