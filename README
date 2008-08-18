@@ -87,6 +87,7 @@ See the rdocs for much more complete examples.  The specs directory has some exa
 use, but the test to code ratio is slim atm.
 
 Thanks to the Indianapolis Star I&D department for open sourcing this; most notably Chris Vannoy for giving the okay.
+Thanks to Kyle Slattery for adding Viddler to the example oembed_links.yml
 
 
 CZ - chris.zelenak!at!!indystar.com
