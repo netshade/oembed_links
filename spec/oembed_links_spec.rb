@@ -234,31 +234,20 @@ describe OEmbed, "Rails template resolving functions" do
     OEmbed::TemplateResolver.template_processor = nil
     @current_path = File.dirname(__FILE__)
     @template_path = File.join(@current_path, "templates")
-
-    class ::ActionView
-      class Template
-        @@template_handlers = { }
-
-        def self.support_haml!
-          @@template_handlers = {"haml" => "nothing"}
-        end
-
-        def self.do_not_support_haml!
-          @@template_handlers = { }
-        end
-        
-      end
-    end
-
-    class ::ApplicationController
-      def self.view_paths
-        [File.dirname(__FILE__)]
-      end
-    end
     
+    require 'actionpack'
+    require 'action_controller'
+    require 'action_controller/test_process'
+
+    class ::ApplicationController < ActionController::Base
+      
+    end
+    ApplicationController.view_paths += [File.dirname(__FILE__)]
+    Dependencies.mark_for_unload(ApplicationController)
   end
 
   it "should support Rails-like template paths for template selection" do
+
     OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any?(:template => "templates/test")
     end.should == "rails erb\n"
@@ -268,17 +257,6 @@ describe OEmbed, "Rails template resolving functions" do
     OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any?(:template => "templates/test.rhtml")
     end.should == "rails rhtml"
-  end
-
-  it "should allow haml support in the Rails app" do
-    ActionView::Template.support_haml!
-    OEmbed.transform("http://test1.net/foo") do |r, url|
-      r.any?(:template => "templates/test")
-    end.should == "rails haml\n"
-    ActionView::Template.do_not_support_haml!
-    OEmbed.transform("http://test1.net/foo") do |r, url|
-      r.any?(:template => "templates/test")
-    end.should == "rails erb\n"    
   end
   
 end
