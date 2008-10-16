@@ -358,7 +358,9 @@ class OEmbed
       if block.nil?
         txt
       else
-        txt.gsub!(u, yield(nil, u))
+        response = OEmbed::Response.new("", u, {})
+        yield(response, u)
+        txt.gsub!(u, response.rendered_content)
       end      
     end
   end

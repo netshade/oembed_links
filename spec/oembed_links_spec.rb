@@ -122,6 +122,7 @@ describe OEmbed, "transforming functions" do
 
   it "should always give priority to provider conditional blocks" do
     OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.none? { "none" }
       r.any? { |a| "any" }
       r.video? { |v| "video" }
       r.from?(:test1) { |t| "test1" }
@@ -131,6 +132,7 @@ describe OEmbed, "transforming functions" do
 
   it "should always give priority regex conditional blocks over all others except provider" do
     OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.none? { "none" }      
       r.any? { |a| "any" }
       r.video? { |v| "video" }
       r.matches?(/./) { |m| "regex" }
@@ -144,6 +146,7 @@ describe OEmbed, "transforming functions" do
 
   it "should recognize the type of content and handle the conditional block appropriately" do
     OEmbed.transform("http://test1.net/foo") do |r, url|
+      r.none? { "none" }      
       r.any? { |a| "any" }
       r.video? { |v| "video" }
     end.should == "video"
@@ -164,6 +167,16 @@ describe OEmbed, "transforming functions" do
       r.from?(:test2) { |t| "test2" }
       r.matches?(/baz/) { |m| "regex" }
     end.should == "foo" 
+  end
+
+  it "should pass control to the .none? block if no scheme matched" do
+    OEmbed.transform("http://not.a.valid.url.host/fake") do |r, url|
+      r.none? { "nomatch" }
+      r.audio? { |a| "audio" }
+      r.hedgehog? { |v| "hedgey"}
+      r.from?(:test2) { |t| "test2" }
+      r.matches?(/baz/) { |m| "regex" }
+    end.should == "nomatch" 
   end
 
   it "should allow templates to be used to process the output" do

@@ -7,7 +7,7 @@ class OEmbed
     def initialize(provider, url, response_object)
       @provider = provider
       @url = url
-      @response = response_object
+      @response = response_object || {}
       @rendered_via_provider = @rendered_via_regex = @rendered_via_type = false
       @rendered = nil
     end
@@ -22,6 +22,14 @@ class OEmbed
       @rendered || self.to_s
     end
 
+
+    # Case where url has not matched at all
+    def none?(*args, &block)
+      if @response.keys.empty? && !has_rendered?
+        return render_content(*args, &block)
+      end
+    end
+    
     # Test if this response has been returned from
     # the given provider_name.
     def from?(provider_name, *args, &block)
