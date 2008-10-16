@@ -1,0 +1,9 @@
+=== 0.1.0 / 2008-10-16
+
+* 2 minor enhancements
+
+  * added Ruby Tubesday fetcher (http://github.com/DanaDanger/ruby_tubesday)
+  * redid gem layout using Hoe
+
+
+
