@@ -5,7 +5,7 @@ class OEmbed
     class RubyTubesday
 
       def initialize
-        @client = RubyTubesday.new(:verify_ssl => false)
+        @client = ::RubyTubesday.new(:verify_ssl => false)
       end
       
       def name
