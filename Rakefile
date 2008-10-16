@@ -1,14 +1,12 @@
 require 'rubygems'
-Gem::manage_gems
-require 'rake/clean'
-require 'rake/gempackagetask'
-CLEAN.include("pkg")
+require 'hoe'
 
-spec = eval(File.read("oembed_links.gemspec")) # I'm going to hell, etc. etc. 
-
-task :default => [:clean, :repackage]
-
-Rake::GemPackageTask.new(spec) do |pkg|
-    pkg.need_tar = true
+Hoe.new('oembed_links', "0.1.0") do |p|
+  p.summary = ""
+  p.url = 'http://indystar.com/'
+  p.description = "Easy OEmbed integration for Ruby (and Rails)."
+  p.rubyforge_name = 'oembed_links'
+  p.extra_dev_deps = ['json']
+  p.developer('Indianapolis Star MD&D', 'bugs@indy.com')
 end
-
+ 
