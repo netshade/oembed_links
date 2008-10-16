@@ -354,7 +354,13 @@ class OEmbed
         yield(response, u)
         txt.gsub!(u, response.rendered_content)
       end
-    end    
+    else
+      if block.nil?
+        txt
+      else
+        txt.gsub!(u, yield(nil, u))
+      end      
+    end
   end
 end
 
