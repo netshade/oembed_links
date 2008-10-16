@@ -1,3 +1,9 @@
+=== 0.1.2 / 2008-10-16
+
+* 1 minor enhancement
+  
+  * add saimonmoore's nil response addition
+
 === 0.1.1 / 2008-10-16
 
 * 1 minor fix
