@@ -1,15 +1,23 @@
+= oembed_links
+
+* http://indystar.com/
+
+== DESCRIPTION:
+
 This is the oembed_links gem.  It allows you to easily parse text and
 query configured providers for embedding information on the links
 inside the text. A sample configuration file for configuring the
 library has been included (oembed_links_example.yml), though you
 may also configure the library programmatically (see rdocs).
 
+== REQUIREMENTS:
+
 You must have the JSON gem installed to use oembed_links.
 If you have the libxml-ruby gem installed, oembed_links will use that;
 it will fall back to hpricot if that is installed, and finally REXML
 if you have nothing else.  
 
-
+== SYNOPSIS:
 
 To get started quickly (in irb):
 
@@ -80,15 +88,37 @@ pipeline, and as such may even do evil things like access your Models.
 
 See the RDocs for OEmbed::TemplateResolver for more information regarding templates and oembed_links.
 
-
-
-
 See the rdocs for much more complete examples.  The specs directory has some examples of programmatic
 use, but the test to code ratio is slim atm.
 
-Thanks to the Indianapolis Star I&D department for open sourcing this; most notably Chris Vannoy for giving the okay.
-Thanks to Kyle Slattery for adding Viddler to the example oembed_links.yml
+== INSTALL:
 
+sudo gem install oembed_links
+(from github)
+gem sources -a http://gems.github.com
+sudo gem install netshade-oembed_links
 
-CZ - chris.zelenak!at!!indystar.com
+== LICENSE:
 
+(The MIT License)
+
+Copyright (c) 2008 Indianapolis Star
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
