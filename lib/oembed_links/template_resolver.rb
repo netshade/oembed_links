@@ -101,7 +101,7 @@ class OEmbed
           rendered_response = ERBTemplate.new(url, data, response).evaluate(contents)
         end        
       end
-      return rendered_response
+      return rendered_response.chomp
     end
 
     private
