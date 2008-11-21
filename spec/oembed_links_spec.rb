@@ -197,7 +197,7 @@ describe OEmbed, "transforming functions" do
     OEmbed::TemplateResolver.template_root = @template_path
     OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any?(:template => "test.html.erb")
-    end.should == "template! erb\n"
+    end.should == "template! erb"
   end
 
   it "should allow for selection of different template renderers" do
@@ -210,12 +210,12 @@ describe OEmbed, "transforming functions" do
     OEmbed::TemplateResolver.template_processor = :erubis
     OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any?(:template => "test.html.erb")
-    end.should == "template! erb\n"    
+    end.should == "template! erb"    
     defined?(Erubis).should == "constant"
     OEmbed::TemplateResolver.template_processor = :haml
     OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any?(:template => "test.haml")
-    end.should == "template! haml\n"
+    end.should == "template! haml"
     defined?(Haml).should == "constant"
   end
 
@@ -263,7 +263,7 @@ describe OEmbed, "Rails template resolving functions" do
 
     OEmbed.transform("http://test1.net/foo") do |r, url|
       r.any?(:template => "templates/test")
-    end.should == "rails erb\n"
+    end.should == "rails erb"
   end
 
   it "should support Rails-like template paths with extension specified" do
