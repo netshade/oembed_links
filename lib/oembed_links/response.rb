@@ -102,11 +102,11 @@ class OEmbed
     def render_content(*args, &block)
       options = (args.last.is_a?(Hash)) ? args.last : { }
       if options[:template]
-        @rendered = TemplateResolver.eval_template_for_path(options[:template], @url, @response, self)
+        @rendered = TemplateResolver.eval_template_for_path(options[:template], @url, @response, self).strip
       elsif block_given?
-        @rendered = yield(@response)
+        @rendered = yield(@response).strip
       else
-        @rendered = self.to_s
+        @rendered = self.to_s.strip
       end      
     end
     
