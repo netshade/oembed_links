@@ -72,6 +72,7 @@ class OEmbed
     #
     # The evaluated result of the template will be returned.
     def self.eval_template_for_path(path, url, data, response)
+      rendered_response = nil
       if defined?(ApplicationController) && defined?(ActionController)
         if !defined?(ActionController::TestRequest) ||
             !defined?(ActionController::TestResponse)
@@ -84,7 +85,9 @@ class OEmbed
                                            path,
                                            200,
                                            true,
-                                           { :data => data, :url => url, :response => response }).body
+                                           { :data => data,
+                                             :url => url,
+                                             :response => response }).body
       end
       if rendered_response.nil? && actual_path = resolve_template_path(path)
         contents = File.read(actual_path)
