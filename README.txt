@@ -62,7 +62,7 @@ OEmbed.transform("Here is a link to amazon http://www.amazon.com/Complete-Aubrey
 end
 
 
-To get started quickly in Rails:
+To get started quickly in Rails (< 2.2.  oembed_links doesn't work in 2.2 yet, when rendering w/ Rails templates):
 
 Copy the included oembed_links_example.yml file to RAILS_ROOT/config/oembed_links.yml,
 add a dependency to the gem in your environment.rb ( config.gem "oembed_links" )
