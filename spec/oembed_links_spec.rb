@@ -247,7 +247,8 @@ describe OEmbed, "Rails template resolving functions" do
     OEmbed::TemplateResolver.template_processor = nil
     @current_path = File.dirname(__FILE__)
     @template_path = File.join(@current_path, "templates")
-    
+
+    gem "actionpack", "< 2.2"
     require 'actionpack'
     require 'action_controller'
     require 'action_controller/test_process'
@@ -256,7 +257,7 @@ describe OEmbed, "Rails template resolving functions" do
       
     end
     ApplicationController.view_paths += [File.dirname(__FILE__)]
-    Dependencies.mark_for_unload(ApplicationController)
+    ActiveSupport::Dependencies.mark_for_unload(ApplicationController)
   end
 
   it "should support Rails-like template paths for template selection" do
