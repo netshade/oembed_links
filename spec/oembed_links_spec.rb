@@ -248,7 +248,6 @@ describe OEmbed, "Rails template resolving functions" do
     @current_path = File.dirname(__FILE__)
     @template_path = File.join(@current_path, "templates")
 
-    gem "actionpack", "< 2.2"
     require 'actionpack'
     require 'action_controller'
     require 'action_controller/test_process'
@@ -263,7 +262,7 @@ describe OEmbed, "Rails template resolving functions" do
   it "should support Rails-like template paths for template selection" do
 
     OEmbed.transform("http://test1.net/foo") do |r, url|
-      r.any?(:template => "templates/test")
+      r.any?(:template => ("templates/test"))
     end.should == "rails erb"
   end
 

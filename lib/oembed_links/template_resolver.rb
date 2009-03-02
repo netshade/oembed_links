@@ -84,7 +84,7 @@ class OEmbed
                                            :render_for_file,
                                            path,
                                            200,
-                                           true,
+                                           nil,
                                            { :data => data,
                                              :url => url,
                                              :response => response }).body
