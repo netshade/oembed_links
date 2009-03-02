@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'hoe'
 
-Hoe.new('oembed_links', "0.1.6") do |p|
+Hoe.new('oembed_links', "0.1.7") do |p|
   p.summary = ""
   p.url = 'http://indystar.com/'
   p.description = "Easy OEmbed integration for Ruby (and Rails)."
