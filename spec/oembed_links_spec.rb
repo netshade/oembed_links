@@ -166,7 +166,13 @@ describe OEmbed, "transforming functions" do
       r.hedgehog? { |v| "hedgey"}
       r.from?(:test2) { |t| "test2" }
       r.matches?(/baz/) { |m| "regex" }
-    end.should == "foo" 
+    end.should == "http://test1.net/foo" 
+  end
+
+  it "should transform only urls which have registered providers" do
+    OEmbed.transform("http://test1.net/foo and http://not.a.valid.url.host/fake are urls") do |r, url|
+      r.video? { |v| "video" }
+    end.should == "video and http://not.a.valid.url.host/fake are urls"    
   end
 
   it "should pass control to the .none? block if no scheme matched" do

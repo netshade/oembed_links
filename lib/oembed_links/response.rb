@@ -80,6 +80,10 @@ class OEmbed
       end
     end
 
+    def has_rendered?
+      !@rendered.nil?
+    end    
+
     private
 
     # Needlessly stupid priority for rendering.
@@ -95,9 +99,6 @@ class OEmbed
       end
     end
 
-    def has_rendered?
-      !@rendered.nil?
-    end
     
     def render_content(*args, &block)
       options = (args.last.is_a?(Hash)) ? args.last : { }

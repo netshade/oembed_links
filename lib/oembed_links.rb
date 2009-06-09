@@ -352,7 +352,7 @@ class OEmbed
         txt.gsub!(u, response.to_s)
       else
         yield(response, u)
-        txt.gsub!(u, response.rendered_content)
+        (response.has_rendered?) ? txt.gsub!(u, response.rendered_content) : txt
       end
     else
       if block.nil?
@@ -360,7 +360,7 @@ class OEmbed
       else
         response = OEmbed::Response.new("", u, {})
         yield(response, u)
-        txt.gsub!(u, response.rendered_content)
+        (response.has_rendered?) ? txt.gsub!(u, response.rendered_content) : txt
       end      
     end
   end
