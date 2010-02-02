@@ -7,6 +7,12 @@
   :hulu: "http://www.hulu.com/api/oembed.{format}"
   :flickr: "http://www.flickr.com/services/oembed"
   :viddler: "http://lab.viddler.com/services/oembed/"
+  :youtube: "http://www.youtube.com/oembed"
+
+:youtube:
+  :format: "json"
+  :schemes: 
+    - "http://www.youtube.com/watch?v=*"
 
 :oohembed:
   :format: "json"
@@ -22,13 +28,12 @@
     - "http://twitter.com/*/statuses/*"
     - "http://*.wikipedia.org/wiki/*"
     - "http://*.wordpress.com/[0-9]{4}/[0-9]{2}/[0-9]{2}/*"
-    - "http://*.youtube.com/watch*"
 
 :vimeo:
   :format: "json"
   :schemes:
-    - "http://www.vimeo.com/groups/*/*"
-    - "http://www.vimeo.com/*"
+    - "http://vimeo.com/*"
+    - "http://vimeo.com/groups/*/videos/*"
 
 :hulu:
   :format: "xml"
