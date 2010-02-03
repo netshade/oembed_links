@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oembed>
+  <version>1.0</version>
+  <type>video</type>
+  <width>437</width>
+  <height>288</height>
+  <title>iPhone macro lens demonstration</title>
+
+  <url>http://www.viddler.com/explore/cdevroe/videos/424/</url>
+  <author_name>cdevroe</author_name>
+  <author_url>http://www.viddler.com/explore/cdevroe/</author_url>
+  <provider>Viddler</provider>
+  <provider_url>http://www.viddler.com/</provider_url>
+  <thumbnail_url>http://cdn-thumbs.viddler.com/thumbnail_2_1646c55_v1.jpg</thumbnail_url>
+
+  <thumbnail_width>437</thumbnail_width>
+  <thumbnail_height>288</thumbnail_height>
+  <html><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width=
+"437" height="288" id="viddlerplayer-1646c55"><param name="movie" value="http://www.viddler.com/player/1646c55/" /><param name="allowScriptAccess" value="always" /><param name="wmode" value="transparent" /><param name="allowFullScreen" value="true" /><embed src="http://www.viddler.com/player/1646c55/" width="437" height="288" type="application/x-shockwave-flash" allowScriptAccess="always" allowFullScreen="true" wmode="transparent" name="viddlerplayer-1646c55" ></embed></object></html>
+</oembed>

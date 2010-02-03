@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<oembed>
+  <version>1.0</version>
+  <type>photo</type>
+  <title>Bacon Lollys</title>
+  <author_name>‮‭‬bees‬</author_name>
+  <author_url>http://www.flickr.com/photos/bees/</author_url>
+
+  <cache_age>3600</cache_age>
+  <provider_name>Flickr</provider_name>
+  <provider_url>http://www.flickr.com/</provider_url>
+  <width>500</width>
+  <height>375</height>
+  <url>http://farm4.static.flickr.com/3040/2362225867_4a87ab8baf.jpg</url>
+</oembed>
