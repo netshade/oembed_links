@@ -18,7 +18,7 @@ class OEmbed
         h = { }
         doc.root.children.each do |node|
           unless node.name.strip.empty?
-            c = node.content
+            c = node.inner_xml.gsub("&lt;", "<").gsub("&gt;",">")
             if c =~ /^[0-9]+$/
               c = c.to_i
             elsif c=~ /^[0-9]+\.[0-9]+$/
