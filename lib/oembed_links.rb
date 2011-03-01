@@ -305,7 +305,7 @@ class OEmbed
         self.register_formatter(OEmbed::Formatters::LibXML)
         loaded_lib = true
       rescue LoadError
-        puts "Error loading LibXML XML formatter"
+        # Silently fail: LibXML XML formatter not found
       end
     end
     unless loaded_lib || ignore.include?("hpricot")
@@ -315,7 +315,7 @@ class OEmbed
         self.register_formatter(OEmbed::Formatters::HpricotXML)        
         loaded_lib = true
       rescue LoadError
-        puts "Error loading Hpricot XML formatter"
+        # Silently fail: Hpricot XML formatter not found
       end      
     end
     unless loaded_lib || ignore.include?("rexml")
